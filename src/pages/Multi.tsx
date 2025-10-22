@@ -9,7 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { parseMultiInput, analyseBatch, BatchItem, BatchSummary } from '@/lib/batch';
+import { parseMultiInput, analyseBatch, BatchItem, BatchSummary, BatchOutput } from '@/lib/batch';
 import { InputPanel } from '@/components/Multi/InputPanel';
 import { SummaryCard } from '@/components/Multi/SummaryCard';
 import { Pagination } from '@/components/Multi/Pagination';
@@ -23,6 +23,7 @@ export default function MultiPage() {
   const [items, setItems] = useState<BatchItem[]>([]);
   const [summary, setSummary] = useState<BatchSummary | null>(null);
   const [notices, setNotices] = useState<string[]>([]);
+  const [skipped, setSkipped] = useState<string[]>([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,6 +63,7 @@ export default function MultiPage() {
       setItems(result.items);
       setSummary(result.summary);
       setNotices(result.notices);
+      setSkipped(result.skipped);
       setPageIndex(0);
       setIsLoading(false);
 
@@ -165,9 +167,21 @@ export default function MultiPage() {
                   <Pagination
                     currentPage={pageIndex}
                     totalPages={items.length}
+                    currentId={items[pageIndex]?.idLabel}
                     onPageChange={handlePageChange}
                   />
                 </div>
+
+                {skipped.length > 0 && (
+                  <div className="flex-shrink-0 bg-blue-900/20 border border-blue-500/30 rounded-lg p-3">
+                    <p className="text-sm font-semibold text-blue-400 mb-1">Skipped Items:</p>
+                    <ul className="text-xs text-blue-300/80 space-y-0.5">
+                      {skipped.map((msg, idx) => (
+                        <li key={idx}>• {msg}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 <div className="flex-grow overflow-hidden">
                   <Detail item={items[pageIndex]} />

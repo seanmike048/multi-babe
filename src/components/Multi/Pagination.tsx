@@ -12,12 +12,14 @@ import {
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
+  currentId?: string;
   onPageChange: (page: number) => void;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
+  currentId,
   onPageChange,
 }) => {
   // Keyboard navigation
@@ -50,26 +52,33 @@ export const Pagination: React.FC<PaginationProps> = ({
         Prev
       </Button>
 
-      <div className="flex items-center gap-3">
-        <span className="text-sm text-slate-400">
-          Page {currentPage + 1} of {totalPages}
-        </span>
-        
-        <Select
-          value={String(currentPage)}
-          onValueChange={(value) => onPageChange(Number(value))}
-        >
-          <SelectTrigger className="w-20 h-8 bg-slate-800 border-slate-700 text-slate-300">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-800 border-slate-700 text-slate-300 max-h-60">
-            {Array.from({ length: totalPages }, (_, i) => (
-              <SelectItem key={i} value={String(i)} className="hover:bg-slate-700">
-                {i + 1}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="flex flex-col items-center gap-1">
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-slate-400">
+            Page {currentPage + 1} of {totalPages}
+          </span>
+          
+          <Select
+            value={String(currentPage)}
+            onValueChange={(value) => onPageChange(Number(value))}
+          >
+            <SelectTrigger className="w-20 h-8 bg-slate-800 border-slate-700 text-slate-300">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-800 border-slate-700 text-slate-300 max-h-60">
+              {Array.from({ length: totalPages }, (_, i) => (
+                <SelectItem key={i} value={String(i)} className="hover:bg-slate-700">
+                  {i + 1}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        {currentId && (
+          <span className="text-xs text-slate-500">
+            ID: <span className="text-amber-400 font-mono">{currentId}</span>
+          </span>
+        )}
       </div>
 
       <Button
