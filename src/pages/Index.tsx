@@ -83,6 +83,13 @@ const Header = ({
             Single Analysis
           </Button>
           <Button
+            variant="ghost"
+            className="px-4 py-1.5 h-auto text-sm text-slate-300 hover:bg-slate-700 hover:text-white"
+            onClick={() => navigate("/multi")}
+          >
+            Multi Analysis
+          </Button>
+          <Button
             variant={mode === "bulk" ? "secondary" : "ghost"}
             className={`px-4 py-1.5 h-auto text-sm ${mode === "bulk" ? "bg-slate-200 text-slate-900 hover:bg-slate-300" : "text-slate-300 hover:bg-slate-700 hover:text-white"}`}
             onClick={() => setMode("bulk")}
